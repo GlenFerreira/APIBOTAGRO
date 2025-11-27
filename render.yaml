@@ -3,7 +3,8 @@ services:
     name: apiagrobot
     env: node
     plan: free
-    buildCommand: npm install
+    rootDir: API
+    buildCommand: npm install --legacy-peer-deps
     startCommand: npm start
     envVars:
       - key: NODE_ENV

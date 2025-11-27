@@ -1,6 +1,6 @@
 openapi: 3.0.0
 info:
-  title: API - Módulos Independentes
+  title: API - Agro BOT
   version: 1.0.0
   description: |
     Documentação completa das APIs independentes dos módulos.
