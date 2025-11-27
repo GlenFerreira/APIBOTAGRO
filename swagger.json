@@ -1,0 +1,912 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API - Módulos Independentes",
+    "version": "1.0.0",
+    "description": "Documentação completa das APIs independentes dos módulos.\n\nTodas as APIs abaixo são **totalmente independentes** do bot WhatsApp e podem ser usadas por qualquer cliente HTTP.\n\n**Servidor em Produção:** https://botagro.onrender.com\n**Servidor Local:** http://localhost:3000",
+    "contact": {
+      "name": "AgroBOT",
+      "url": "https://github.com/GlenFerreira/BOTAgro"
+    },
+    "license": {
+      "name": "MIT"
+    }
+  },
+  "servers": [
+    {
+      "url": "https://botagro.onrender.com",
+      "description": "Servidor de Produção (Render)"
+    },
+    {
+      "url": "http://localhost:3000",
+      "description": "Servidor Local"
+    }
+  ],
+  "tags": [
+    {
+      "name": "USDA",
+      "description": "APIs para dados de commodities agrícolas"
+    },
+    {
+      "name": "OpenWeather",
+      "description": "APIs para previsão do tempo"
+    },
+    {
+      "name": "Clima",
+      "description": "APIs para geração de imagens de previsão"
+    },
+    {
+      "name": "Geolocalização",
+      "description": "APIs para processamento de arquivos geográficos"
+    },
+    {
+      "name": "Health",
+      "description": "Endpoints de saúde do sistema"
+    }
+  ],
+  "paths": {
+    "/api/v1/usda/commodity": {
+      "get": {
+        "summary": "Busca dados de commodity por nome",
+        "description": "Busca dados de uma commodity agrícola por nome, com normalização automática usando IA. Suporta commodities como milho, soja, trigo, café, algodão, açúcar e arroz.",
+        "tags": ["USDA"],
+        "parameters": [
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "description": "Nome da commodity (ex: milho, soja, trigo, café, algodão, açúcar, arroz)",
+            "schema": {
+              "type": "string",
+              "example": "milho"
+            }
+          },
+          {
+            "name": "year",
+            "in": "query",
+            "required": false,
+            "description": "Ano dos dados (padrão: ano atual)",
+            "schema": {
+              "type": "integer",
+              "example": 2024
+            }
+          },
+          {
+            "name": "country",
+            "in": "query",
+            "required": false,
+            "description": "Código do país (padrão: BR)",
+            "schema": {
+              "type": "string",
+              "default": "BR",
+              "example": "BR"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Dados da commodity retornados com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommodityResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Commodity não encontrada ou dados indisponíveis",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/weather/forecast": {
+      "get": {
+        "summary": "Busca previsão do tempo para 5 dias",
+        "description": "Retorna previsão do tempo detalhada para os próximos 5 dias de uma cidade. Inclui temperatura, umidade, vento, chuva e condições climáticas. Se houver imagem disponível para a cidade, retorna o caminho da imagem.",
+        "tags": ["OpenWeather"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "description": "Nome da cidade",
+            "schema": {
+              "type": "string",
+              "example": "São Paulo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Previsão do tempo retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WeatherForecastResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cidade não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/weather/current": {
+      "get": {
+        "summary": "Busca clima atual de uma cidade",
+        "description": "Retorna dados do clima atual de uma cidade, incluindo temperatura, umidade, pressão, vento, visibilidade e condições climáticas.",
+        "tags": ["OpenWeather"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "description": "Nome da cidade",
+            "schema": {
+              "type": "string",
+              "example": "São Paulo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Clima atual retornado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CurrentWeatherResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Cidade não encontrada",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clima/generate": {
+      "get": {
+        "summary": "Gera imagem de previsão do tempo",
+        "description": "Gera uma imagem de previsão do tempo usando a API Windy. A imagem é salva em uma pasta específica baseada na camada escolhida.",
+        "tags": ["Clima"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "description": "Nome da cidade",
+            "schema": {
+              "type": "string",
+              "example": "São Paulo"
+            }
+          },
+          {
+            "name": "layer",
+            "in": "query",
+            "required": false,
+            "description": "Camada da imagem. Opções: satellite, clouds, radar, temp, wind, rain, thunder, rainthunder. Padrão: temp",
+            "schema": {
+              "type": "string",
+              "enum": ["satellite", "clouds", "radar", "temp", "wind", "rain", "thunder", "rainthunder"],
+              "default": "temp",
+              "example": "temp"
+            }
+          },
+          {
+            "name": "hours",
+            "in": "query",
+            "required": false,
+            "description": "Horas à frente (1-168, padrão: 24)",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 168,
+              "default": 24,
+              "example": 24
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Imagem gerada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClimaGenerateResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro ao gerar imagem (parâmetros inválidos ou erro no processo)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/clima/images": {
+      "get": {
+        "summary": "Lista imagens disponíveis para uma cidade",
+        "description": "Retorna lista de todas as imagens de previsão disponíveis para uma cidade, organizadas por camada.",
+        "tags": ["Clima"],
+        "parameters": [
+          {
+            "name": "city",
+            "in": "query",
+            "required": true,
+            "description": "Nome da cidade",
+            "schema": {
+              "type": "string",
+              "example": "São Paulo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lista de imagens retornada com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ClimaImagesResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Parâmetro obrigatório ausente",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/geolocalizacao/upload": {
+      "post": {
+        "summary": "Faz upload e processa arquivo geográfico",
+        "description": "Recebe um arquivo .shp ou .kml e processa para extrair informações sobre propriedades rurais. Retorna área total, coordenadas, centroide e bounding box.",
+        "tags": ["Geolocalização"],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "file": {
+                    "type": "string",
+                    "format": "binary",
+                    "description": "Arquivo .shp ou .kml"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Arquivo processado com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GeolocalizacaoResponse"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Erro no processamento do arquivo",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/geolocalizacao/info": {
+      "get": {
+        "summary": "Informações sobre o módulo de geolocalização",
+        "description": "Retorna informações sobre formatos suportados e limites do módulo.",
+        "tags": ["Geolocalização"],
+        "responses": {
+          "200": {
+            "description": "Informações retornadas com sucesso",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "module": {
+                      "type": "string",
+                      "example": "geolocalizacao"
+                    },
+                    "supportedFormats": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      },
+                      "example": [".shp", ".kml", ".kmz"]
+                    },
+                    "maxFileSize": {
+                      "type": "string",
+                      "example": "50MB"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/health": {
+      "get": {
+        "summary": "Verifica o status do servidor",
+        "description": "Endpoint de health check para verificar se o servidor está funcionando.",
+        "tags": ["Health"],
+        "responses": {
+          "200": {
+            "description": "Servidor está funcionando",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string",
+                      "example": "ok"
+                    },
+                    "timestamp": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "botName": {
+                      "type": "string",
+                      "example": "Assistente"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CommodityResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "commodity": {
+            "type": "object",
+            "properties": {
+              "name": {
+                "type": "string",
+                "example": "milho"
+              },
+              "code": {
+                "type": "string",
+                "example": "0440000"
+              },
+              "country": {
+                "type": "string",
+                "example": "BR"
+              },
+              "year": {
+                "type": "integer",
+                "example": 2024
+              }
+            }
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "production": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "exports": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "endingStocks": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "areaPlanted": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "domesticConsumption": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "imports": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "crush": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "totalSupply": {
+                "$ref": "#/components/schemas/FormattedValue"
+              },
+              "totalUse": {
+                "$ref": "#/components/schemas/FormattedValue"
+              }
+            }
+          },
+          "raw": {
+            "type": "object",
+            "description": "Dados brutos da API"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "FormattedValue": {
+        "type": "object",
+        "properties": {
+          "value": {
+            "type": "number",
+            "example": 125000
+          },
+          "formatted": {
+            "type": "string",
+            "example": "125.000 mil toneladas"
+          }
+        }
+      },
+      "WeatherForecastResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
+          "forecasts": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Forecast"
+            }
+          },
+          "hasImage": {
+            "type": "boolean",
+            "example": true
+          },
+          "imagePath": {
+            "type": "string",
+            "nullable": true,
+            "example": "/path/to/image.png"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "CurrentWeatherResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "city": {
+            "$ref": "#/components/schemas/City"
+          },
+          "weather": {
+            "$ref": "#/components/schemas/CurrentWeather"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "City": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "São Paulo"
+          },
+          "country": {
+            "type": "string",
+            "example": "BR"
+          },
+          "state": {
+            "type": "string",
+            "nullable": true,
+            "example": "São Paulo"
+          },
+          "coordinates": {
+            "type": "object",
+            "properties": {
+              "lat": {
+                "type": "number",
+                "example": -23.5505
+              },
+              "lon": {
+                "type": "number",
+                "example": -46.6333
+              }
+            }
+          }
+        }
+      },
+      "Forecast": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "dateFormatted": {
+            "type": "string",
+            "example": "Terça-feira, 19 de novembro"
+          },
+          "icon": {
+            "type": "string",
+            "example": "☁️"
+          },
+          "description": {
+            "type": "string",
+            "example": "nuvens dispersas"
+          },
+          "temperature": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "integer",
+                "example": 23
+              },
+              "min": {
+                "type": "integer",
+                "example": 23
+              },
+              "max": {
+                "type": "integer",
+                "example": 24
+              }
+            }
+          },
+          "humidity": {
+            "type": "integer",
+            "example": 62
+          },
+          "windSpeed": {
+            "type": "integer",
+            "example": 24
+          },
+          "rain": {
+            "type": "number",
+            "example": 0
+          }
+        }
+      },
+      "CurrentWeather": {
+        "type": "object",
+        "properties": {
+          "icon": {
+            "type": "string",
+            "example": "☁️"
+          },
+          "description": {
+            "type": "string",
+            "example": "nuvens dispersas"
+          },
+          "temperature": {
+            "type": "object",
+            "properties": {
+              "current": {
+                "type": "integer",
+                "example": 23
+              },
+              "feelsLike": {
+                "type": "integer",
+                "example": 24
+              },
+              "min": {
+                "type": "integer",
+                "example": 20
+              },
+              "max": {
+                "type": "integer",
+                "example": 25
+              }
+            }
+          },
+          "humidity": {
+            "type": "integer",
+            "example": 62
+          },
+          "pressure": {
+            "type": "integer",
+            "example": 1013
+          },
+          "windSpeed": {
+            "type": "integer",
+            "example": 15
+          },
+          "windDirection": {
+            "type": "integer",
+            "nullable": true,
+            "example": 180
+          },
+          "visibility": {
+            "type": "number",
+            "nullable": true,
+            "example": 10
+          },
+          "clouds": {
+            "type": "integer",
+            "example": 75
+          }
+        }
+      },
+      "ClimaGenerateResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "city": {
+            "type": "string",
+            "example": "São Paulo"
+          },
+          "layer": {
+            "type": "string",
+            "example": "temp"
+          },
+          "hours": {
+            "type": "integer",
+            "example": 24
+          },
+          "imagePath": {
+            "type": "string",
+            "example": "/path/to/saopaulo_windy_temp_24h.png"
+          },
+          "imageUrl": {
+            "type": "string",
+            "example": "/api/clima/image/temp/saopaulo_windy_temp_24h.png"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "ClimaImagesResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "city": {
+            "type": "string",
+            "example": "São Paulo"
+          },
+          "images": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "layer": {
+                  "type": "string",
+                  "example": "temp"
+                },
+                "fileName": {
+                  "type": "string",
+                  "example": "saopaulo_windy_temp_24h.png"
+                },
+                "path": {
+                  "type": "string",
+                  "example": "/path/to/image.png"
+                },
+                "url": {
+                  "type": "string",
+                  "example": "/api/clima/image/temp/saopaulo_windy_temp_24h.png"
+                }
+              }
+            }
+          },
+          "count": {
+            "type": "integer",
+            "example": 1
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      },
+      "GeolocalizacaoResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": true
+          },
+          "message": {
+            "type": "string",
+            "example": "📍 *Informações da Propriedade*\n\n📁 *Arquivo:* propriedade.kml..."
+          },
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "example": "kml"
+              },
+              "totalArea": {
+                "type": "object",
+                "properties": {
+                  "squareMeters": {
+                    "type": "number",
+                    "example": 1234567
+                  },
+                  "hectares": {
+                    "type": "number",
+                    "example": 123.4567
+                  },
+                  "squareKilometers": {
+                    "type": "number",
+                    "example": 1.234567
+                  }
+                }
+              },
+              "polygonCount": {
+                "type": "integer",
+                "example": 1
+              },
+              "polygons": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "area": {
+                      "type": "object",
+                      "properties": {
+                        "squareMeters": {
+                          "type": "number"
+                        },
+                        "hectares": {
+                          "type": "number"
+                        },
+                        "squareKilometers": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "centroid": {
+                      "type": "object",
+                      "properties": {
+                        "longitude": {
+                          "type": "number"
+                        },
+                        "latitude": {
+                          "type": "number"
+                        }
+                      }
+                    },
+                    "bbox": {
+                      "type": "object",
+                      "properties": {
+                        "minLon": {
+                          "type": "number"
+                        },
+                        "minLat": {
+                          "type": "number"
+                        },
+                        "maxLon": {
+                          "type": "number"
+                        },
+                        "maxLat": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "example": false
+          },
+          "error": {
+            "type": "string",
+            "example": "Mensagem de erro descritiva"
+          },
+          "timestamp": {
+            "type": "string",
+            "format": "date-time"
+          }
+        }
+      }
+    }
+  }
+}
+
