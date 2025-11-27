@@ -99,7 +99,7 @@ GET /api/v1/usda/commodity?name=milho&year=2024&country=BR
 curl "http://localhost:3000/api/v1/usda/commodity?name=soja&year=2024"
 
 # Produção
-curl "https://botagro.onrender.com/api/v1/usda/commodity?name=milho"
+curl "https://apibotagro.onrender.com/api/v1/usda/commodity?name=milho"
 ```
 
 ### 🌤️ OpenWeather - Clima
@@ -163,7 +163,7 @@ GET /api/v1/weather/current?city=São Paulo
 curl "http://localhost:3000/api/v1/weather/forecast?city=Chapadão do Sul"
 
 # Produção
-curl "https://botagro.onrender.com/api/v1/weather/current?city=São Paulo"
+curl "https://apibotagro.onrender.com/api/v1/weather/current?city=São Paulo"
 ```
 
 ### 🖼️ Clima - Geração de Imagens
@@ -207,7 +207,7 @@ GET /api/v1/clima/images?city=São Paulo
 curl "http://localhost:3000/api/v1/clima/generate?city=São Paulo&layer=rain&hours=48"
 
 # Produção
-curl "https://botagro.onrender.com/api/v1/clima/images?city=São Paulo"
+curl "https://apibotagro.onrender.com/api/v1/clima/images?city=São Paulo"
 ```
 
 ## 🔧 Módulos Disponíveis
@@ -349,11 +349,11 @@ Todos os módulos estão disponíveis através de rotas HTTP REST. A documentaç
 
 O servidor está hospedado no **Render** e está disponível em:
 
-**URL Base:** `https://botagro.onrender.com`
+**URL Base:** `https://apibotagro.onrender.com`
 
-**Documentação Swagger:** [https://botagro.onrender.com/api-docs](https://botagro.onrender.com/api-docs)
+**Documentação Swagger:** [https://apibotagro.onrender.com/api-docs](https://apibotagro.onrender.com/api-docs)
 
-**Health Check:** [https://botagro.onrender.com/health](https://botagro.onrender.com/health)
+**Health Check:** [https://apibotagro.onrender.com/health](https://apibotagro.onrender.com/health)
 
 ### Endpoints Disponíveis
 
@@ -400,19 +400,19 @@ O servidor está hospedado no **Render** e está disponível em:
 
 ```bash
 # Health Check
-curl https://botagro.onrender.com/health
+curl https://apibotagro.onrender.com/health
 
 # Buscar dados de milho (API Independente)
-curl "https://botagro.onrender.com/api/v1/usda/commodity?name=milho"
+curl "https://apibotagro.onrender.com/api/v1/usda/commodity?name=milho"
 
 # Previsão do tempo para São Paulo (API Independente)
-curl "https://botagro.onrender.com/api/v1/weather/forecast?city=São Paulo"
+curl "https://apibotagro.onrender.com/api/v1/weather/forecast?city=São Paulo"
 
 # Buscar dados de milho do Brasil em 2025 (Legado)
-curl https://botagro.onrender.com/api/usda/commodity/0440000/brazil/2025
+curl https://apibotagro.onrender.com/api/usda/commodity/0440000/brazil/2025
 
 # Upload e processamento de arquivo KML
-curl -X POST https://botagro.onrender.com/api/geolocalizacao/upload \
+curl -X POST https://apibotagro.onrender.com/api/geolocalizacao/upload \
   -F "file=@propriedade.kml"
 ```
 
@@ -487,7 +487,7 @@ Os arquivos de especificação Swagger estão localizados em:
 
 ### 🌐 Produção (Render)
 
-**URL:** [https://botagro.onrender.com/api-docs](https://botagro.onrender.com/api-docs)
+**URL:** [https://apibotagro.onrender.com/api-docs](https://apibotagro.onrender.com/api-docs)
 
 Acesse diretamente no navegador para explorar e testar todos os endpoints disponíveis.
 
@@ -559,6 +559,6 @@ Os módulos são automaticamente integrados ao bot do WhatsApp:
 - [Documentação Render](https://render.com/docs)
 
 ### APIs em Produção
-- **Health Check:** https://botagro.onrender.com/health
-- **Swagger UI:** https://botagro.onrender.com/api-docs
+- **Health Check:** https://apibotagro.onrender.com/health
+- **Swagger UI:** https://apibotagro.onrender.com/api-docs
 - **Repositório GitHub:** https://github.com/GlenFerreira/BOTAgro

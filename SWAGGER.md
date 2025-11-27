@@ -60,7 +60,7 @@ Acesse `http://localhost:3001` para ver a documentação.
 ### 6. Integração com o Servidor
 
 O servidor principal (`index.js`) já está configurado para servir o Swagger UI em:
-- **Produção:** https://botagro.onrender.com/api-docs
+- **Produção:** https://apibotagro.onrender.com/api-docs
 - **Local:** http://localhost:3000/api-docs
 
 A documentação no servidor é gerada automaticamente a partir dos comentários JSDoc no código.

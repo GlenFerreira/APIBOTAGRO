@@ -7,7 +7,7 @@ info:
     
     Todas as APIs abaixo são **totalmente independentes** do bot WhatsApp e podem ser usadas por qualquer cliente HTTP.
     
-    **Servidor em Produção:** https://botagro.onrender.com
+    **Servidor em Produção:** https://apibotagro.onrender.com
     **Servidor Local:** http://localhost:3000
   contact:
     name: AgroBOT
@@ -16,7 +16,7 @@ info:
     name: MIT
 
 servers:
-  - url: https://botagro.onrender.com
+  - url: https://apibotagro.onrender.com
     description: Servidor de Produção (Render)
   - url: http://localhost:3000
     description: Servidor Local
