@@ -29,9 +29,7 @@
     "shapefile": "^0.6.6",
     "@mapbox/togeojson": "^0.16.0",
     "@xmldom/xmldom": "^0.8.10",
-    "@turf/turf": "^6.5.0",
-    "canvas": "^3.2.0",
-    "puppeteer": "^21.0.0"
+    "@turf/turf": "^6.5.0"
   },
   "engines": {
     "node": ">=18.0.0",

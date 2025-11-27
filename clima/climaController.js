@@ -2,6 +2,9 @@ import { spawn } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import fs from 'fs';
+import { createRequire } from 'module';
+
+const require = createRequire(import.meta.url);
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,6 +31,17 @@ const LAYER_FOLDERS = {
 export async function generateForecastImage(cityName, layer = 'temp', hours = 24) {
     return new Promise((resolve, reject) => {
         try {
+            // Verifica se puppeteer está disponível
+            try {
+                require.resolve('puppeteer');
+            } catch (e) {
+                return resolve({
+                    success: false,
+                    error: 'Funcionalidade de geração de imagens não disponível no servidor. Puppeteer não está instalado.',
+                    note: 'Esta funcionalidade requer dependências pesadas que não estão instaladas no ambiente de produção.'
+                });
+            }
+            
             // Valida a camada
             if (!LAYER_FOLDERS[layer]) {
                 return resolve({
