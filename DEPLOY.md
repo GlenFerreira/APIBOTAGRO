@@ -18,7 +18,8 @@ Este guia explica como fazer o deploy desta API no Render.
 4. Configure o serviço:
    - **Name:** `apiagrobot` (ou o nome que preferir)
    - **Environment:** `Node`
-   - **Build Command:** `npm install`
+   - **Root Directory:** (deixar em branco - o repositório Git já está na pasta API)
+   - **Build Command:** `npm install --legacy-peer-deps`
    - **Start Command:** `npm start`
    - **Plan:** Free (ou outro plano de sua escolha)
 
