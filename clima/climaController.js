@@ -28,16 +28,6 @@ const LAYER_FOLDERS = {
 export async function generateForecastImage(cityName, layer = 'temp', hours = 24) {
     return new Promise((resolve, reject) => {
         try {
-            // Verifica se o script existe (indica se as dependências estão instaladas)
-            const scriptPath = path.join(__dirname, 'forecastEMCWF.mjs');
-            if (!fs.existsSync(scriptPath)) {
-                return resolve({
-                    success: false,
-                    error: 'Funcionalidade de geração de imagens não disponível no servidor.',
-                    note: 'Esta funcionalidade requer dependências pesadas (puppeteer, canvas) que não estão instaladas no ambiente de produção.'
-                });
-            }
-            
             // Valida a camada
             if (!LAYER_FOLDERS[layer]) {
                 return resolve({
