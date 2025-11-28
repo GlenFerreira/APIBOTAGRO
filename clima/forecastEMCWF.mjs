@@ -1,4 +1,4 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
 import { createCanvas, loadImage } from 'canvas';
 import fs from 'fs';
 import path from 'path';
@@ -934,9 +934,23 @@ async function captureWindyMap(layer, forecastHours, cityName = null) {
     zoomLevel = 4.1; // Zoom padrão para Brasil
   }
   
+  // Configurar executável do Chrome (usar o do sistema ou variável de ambiente)
+  const executablePath = process.env.PUPPETEER_EXECUTABLE_PATH || 
+                         process.env.CHROME_BIN || 
+                         '/usr/bin/google-chrome' || 
+                         '/usr/bin/chromium-browser' ||
+                         '/usr/bin/chromium';
+  
   const browser = await puppeteer.launch({
     headless: true,
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
+    executablePath: executablePath || undefined, // Se não encontrar, deixa o puppeteer-core tentar
+    args: [
+      '--no-sandbox', 
+      '--disable-setuid-sandbox',
+      '--disable-dev-shm-usage',
+      '--disable-gpu',
+      '--single-process'
+    ]
   });
   
   try {

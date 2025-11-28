@@ -44,6 +44,8 @@ export async function generateForecastImage(cityName, layer = 'temp', hours = 24
                 });
             }
             
+            const scriptPath = path.join(__dirname, 'forecastEMCWF.mjs');
+            
             // Executa o script
             const child = spawn('node', [scriptPath, hours.toString(), layer, cityName], {
                 cwd: __dirname,
