@@ -1,11 +1,5 @@
 import weatherService from './weatherService.js';
 import { normalizarTextoComIA } from '../utils/textNormalizer.js';
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 // Mapeamento de ícones do OpenWeather para emojis
 const WEATHER_ICONS = {
@@ -30,7 +24,7 @@ const WEATHER_ICONS = {
 };
 
 /**
- * Verifica se existe imagem para a cidade
+ * Verifica se existe imagem para a cidade no Supabase
  */
 function getCityImagePath(cityName) {
     const normalizedName = cityName
@@ -40,25 +34,17 @@ function getCityImagePath(cityName) {
         .replace(/[^a-zA-Z0-9]/g, '')
         .toLowerCase();
     
-    const imageFolders = ['imgrain', 'imgtemp', 'imgwind', 'imgcloud', 'imgsat', 'imgradar', 'imgthund', 'imgrt'];
-    const climaDir = path.join(__dirname, '../clima');
+    // URLs fixas do Supabase para as cidades disponíveis
+    const SUPABASE_BASE_URL = 'https://sqsgconmsaeabsdjsyqq.supabase.co/storage/v1/object/public/agroimg';
     
-    for (const folder of imageFolders) {
-        const folderPath = path.join(climaDir, folder);
-        if (fs.existsSync(folderPath)) {
-            const files = fs.readdirSync(folderPath);
-            const cityImage = files.find(file => 
-                file.startsWith(normalizedName) && 
-                file.endsWith('_24h.png')
-            );
-            
-            if (cityImage) {
-                return path.join(folderPath, cityImage);
-            }
-        }
-    }
+    // Mapeamento de cidades normalizadas para URLs
+    const cityImageMap = {
+        'saopaulo': `${SUPABASE_BASE_URL}/saopaulo_windy_rain_24h.png`,
+        'chapadaodosul': `${SUPABASE_BASE_URL}/chapadaodosul_windy_rain_24h.png`
+    };
     
-    return null;
+    // Retorna a URL se a cidade estiver no mapeamento, caso contrário retorna null
+    return cityImageMap[normalizedName] || null;
 }
 
 /**
